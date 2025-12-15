@@ -1,0 +1,126 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+  padding: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 550px;
+  height: 80vh; /* Hauteur fixe pour assurer l'apparition de la barre de défilement */
+  min-height: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-header-nav {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(to right, #f0f9e8, #e8f6e0);
+  border-bottom: 1px solid #e6f2d9;
+}
+
+.modal-title {
+  flex-grow: 1;
+  margin: 0;
+  color: #4a6741;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.modal-content {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: scroll !important; /* Forcer l'affichage de la barre de défilement */
+  overflow-x: hidden;
+  height: calc(100% - 3.5rem);
+}
+
+/* Style personnalisé pour la barre de défilement */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #5a7a4e;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.modal-close-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #3c5a33;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .modal-container {
+    width: 95%;
+    max-height: 80vh;
+  }
+  
+  .modal-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+}

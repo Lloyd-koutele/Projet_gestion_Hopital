@@ -1,0 +1,53 @@
+/* Styles pour les composants du tableau de bord patient */
+
+.patient-dashboard h1 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.patient-dashboard .card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.patient-dashboard .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.patient-dashboard .card-header {
+  font-weight: 600;
+  padding: 0.8rem 1.25rem;
+}
+
+.consultation-card {
+  border-left: 4px solid #007bff;
+  background-color: #f8f9fa;
+}
+
+.consultation-card:hover {
+  background-color: #e9ecef;
+}
+
+.consultations-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Style pour les informations du dossier médical */
+.patient-dashboard strong {
+  color: #495057;
+}
+
+/* Adaptations pour les appareils mobiles */
+@media (max-width: 768px) {
+  .patient-dashboard .card-body {
+    padding: 1rem;
+  }
+  
+  .patient-dashboard h1 {
+    font-size: 1.75rem;
+  }
+}

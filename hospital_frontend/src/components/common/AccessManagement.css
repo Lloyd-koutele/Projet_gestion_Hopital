@@ -1,0 +1,400 @@
+/* Styles pour le composant de gestion des accès */
+
+.access-management-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+}
+
+.access-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.access-management-title {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+/* Section des autorisations actuelles */
+.current-access-section {
+  margin-bottom: 30px;
+}
+
+.access-list {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.access-list-header {
+  background-color: #f8f9fa;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 500;
+  color: #2c3e50;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+
+.access-list-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+}
+
+.access-list-item:last-child {
+  border-bottom: none;
+}
+
+.access-list-item:hover {
+  background-color: #f8f9fa;
+}
+
+.access-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.access-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.access-user-name {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.access-user-role {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.access-granted-date {
+  color: #5a6268;
+  font-size: 0.9rem;
+}
+
+.access-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.access-status-active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.access-status-expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.access-status-pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.access-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.access-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3498db;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.access-action-btn:hover {
+  background-color: #e6f7ff;
+}
+
+.access-action-btn.revoke {
+  color: #e74c3c;
+}
+
+.access-action-btn.revoke:hover {
+  background-color: #fdebeb;
+}
+
+/* Section pour ajouter une nouvelle autorisation */
+.add-access-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.add-access-title {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.add-access-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+/* États vides */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  color: #95a5a6;
+  margin-bottom: 15px;
+}
+
+.empty-state-text {
+  font-size: 1rem;
+  color: #7f8c8d;
+  max-width: 400px;
+}
+
+/* Messages d'erreur et de succès */
+.message {
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.message-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.message-success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #dcfce7;
+}
+
+.message-warning {
+  background-color: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fef3c7;
+}
+
+.message-info {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .access-list-header,
+  .access-list-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .access-list-header div:nth-child(2),
+  .access-list-item div:nth-child(2) {
+    display: none;
+  }
+  
+  .access-actions {
+    grid-column: span 2;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .access-list-header,
+  .access-list-item {
+    grid-template-columns: 1fr;
+  }
+  
+  .access-list-header div:nth-child(3),
+  .access-list-item div:nth-child(3) {
+    display: none;
+  }
+  
+  .access-actions {
+    grid-column: 1;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}
+
+/* Sélecteur d'utilisateur */
+.user-selector {
+  position: relative;
+}
+
+.user-search-input {
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 30px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.user-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-search-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.user-search-item:hover {
+  background-color: #f8f9fa;
+}
+
+.user-search-item-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.user-search-item-name {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.user-search-item-role {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+/* Sélecteur de durée */
+.duration-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.duration-input {
+  width: 70px;
+}
+
+.duration-unit {
+  flex-grow: 1;
+}

@@ -1,0 +1,146 @@
+/* Styles pour la gestion des accès aux patients */
+
+/* Styles pour les badges de niveau d'accès */
+.access-level-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.access-level-lecture {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.access-level-ecriture {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.access-level-complet {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Styles pour les actions groupées */
+.patient-access-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.patient-access-container {
+  background-color: #f8ffee;
+  border: 1px solid #cde6a0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.patient-access-title {
+  color: #3c5a14;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.patient-access-subtitle {
+  color: #3c5a14;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.patient-access-alert {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.patient-access-alert-success {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.patient-access-alert-error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.patient-access-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patient-access-table th, 
+.patient-access-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.patient-access-form {
+  margin-top: 20px;
+}
+
+.patient-access-form-field {
+  margin-bottom: 15px;
+}
+
+.patient-access-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.patient-access-input,
+.patient-access-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #b8de7a;
+  background-color: #fafff5;
+}
+
+.patient-access-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.patient-access-button-primary {
+  background-color: #9ccc3d;
+  color: white;
+}
+
+.patient-access-button-primary:hover {
+  background-color: #8ab334;
+}
+
+.patient-access-button-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.patient-access-button-danger:hover {
+  background-color: #c82333;
+}
+
+.patient-access-button-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.patient-access-button-secondary:hover {
+  background-color: #5a6268;
+}
+
+.patient-access-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
