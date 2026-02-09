@@ -1,0 +1,162 @@
+.scene {
+    width: 100%;
+    max-width: 1200px;
+    height: 400px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    overflow: visible;
+    position: relative;
+    margin: 0 auto;
+    transform: translateY(-50px);
+}
+
+/* Ground/floor effect */
+.scene::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: radial-gradient(ellipse at center bottom,
+            rgba(100, 100, 100, 0.3) 0%,
+            rgba(50, 50, 50, 0.1) 30%,
+            transparent 70%);
+    pointer-events: none;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+.carousel-item {
+    position: absolute;
+    width: 300px;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    transform-origin: center center;
+}
+
+/* Ground reflection for each card */
+.carousel-item::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    transform: scaleY(-1) translateY(100%);
+    opacity: 0;
+    mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.3) 0%,
+            transparent 50%);
+    -webkit-mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.3) 0%,
+            transparent 50%);
+    filter: blur(3px);
+    transition: opacity 0.6s ease;
+}
+
+/* Center card - larger and brighter */
+.carousel-item[data-position="0"] {
+    transform: translateX(0) translateZ(0) rotateY(0deg) scale(1.1);
+    z-index: 10;
+    filter: brightness(1.2);
+}
+
+.carousel-item[data-position="0"]::after {
+    opacity: 0.4;
+}
+
+/* Right cards */
+.carousel-item[data-position="1"] {
+    transform: translateX(280px) translateZ(-200px) rotateY(-35deg) scale(0.85);
+    z-index: 5;
+    filter: brightness(0.7);
+}
+
+.carousel-item[data-position="2"] {
+    transform: translateX(480px) translateZ(-350px) rotateY(-45deg) scale(0.7);
+    z-index: 3;
+    filter: brightness(0.5);
+    opacity: 0.7;
+}
+
+/* Left cards */
+.carousel-item[data-position="-1"] {
+    transform: translateX(-280px) translateZ(-200px) rotateY(35deg) scale(0.85);
+    z-index: 5;
+    filter: brightness(0.7);
+}
+
+.carousel-item[data-position="-2"] {
+    transform: translateX(-480px) translateZ(-350px) rotateY(45deg) scale(0.7);
+    z-index: 3;
+    filter: brightness(0.5);
+    opacity: 0.7;
+}
+
+/* Hidden cards */
+.carousel-item[data-position="3"],
+.carousel-item[data-position="-3"],
+.carousel-item:not([data-position]) {
+    transform: translateX(0) translateZ(-500px) scale(0.5);
+    opacity: 0;
+    z-index: 0;
+}
+
+/* Navigation arrows */
+.controls {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.controls button {
+    pointer-events: all;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls button:hover {
+    background: rgba(31, 191, 202, 0.15);
+    color: rgba(177, 226, 250, 0.9);
+    border-color: rgba(20, 146, 215, 0.4);
+    transform: scale(1.1);
+}

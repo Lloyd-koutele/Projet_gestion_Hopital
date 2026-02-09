@@ -1,0 +1,10 @@
+.footer {
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    background: linear-gradient(to right, #1a4567 0%, #21a1ac 50%, #26c4d1 100%);
+    width: 100vw;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-120px);
+    padding: 20px 0;
+}

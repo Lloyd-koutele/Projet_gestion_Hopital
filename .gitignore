@@ -1,0 +1,36 @@
+# --- Fichiers système et IDE ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+
+# --- Gradle ---
+.gradle/
+build/
+/out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- Spring Boot ---
+HELP.md
+target/
+*.log
+.sts4-cache/
+
+# --- Frontend (React/Vite) ---
+hospital_frontend/node_modules/
+hospital_frontend/dist/
+hospital_frontend/dist-ssr/
+hospital_frontend/*.local
+hospital_frontend/.eslintcache
+
+# --- Divers ---
+.env
+.env.local
