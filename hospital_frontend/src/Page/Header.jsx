@@ -1,28 +1,24 @@
 import React from 'react';
-
+import { getCurrentUserInfo } from '../services/authService';
 function Header() {
-    const role = getCurrentUserRole();
+    const role = getCurrentUserInfo.role;
     return (
         <header>
             <h2> Bienvenue sur le site
 
                 if (role == "ADMIN"){
-                    "L'admin"
+                    "admin " + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
                 }
                 else if (role == "MEDECIN"){
-                    "Le medecin"
+                    "Dr " + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
                 }
                 else if (role == "CHERCHEUR"){
-                    "Le Chercheur"
+                    "chercheur "  + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
                 }
                 else if (role == "PATIENT"){
-                    "Le Patient"
+                    "patient "+ getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
                 }
             </h2>
-
-            <button onClick={() => { window.location.href = '/login'; }}>
-                Se deconnecter
-            </button>
         </header>
     );
 }

@@ -104,13 +104,25 @@ function Login() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="login-button"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Connexion en cours...' : 'Se connecter'}
-          </button>
+          <div className='container'>
+            <button
+              type="submit"
+              className="login-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Connexion en cours...' : 'Se connecter'}
+            </button>
+
+            <button
+              type="submit"
+              className='button-retour'
+              onClick={() => { window.location.href = '/'; }}
+            >
+              Retour
+            </button>
+          </div>
+
+
         </form>
       </div>
     </div>
