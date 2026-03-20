@@ -78,12 +78,22 @@ public class MedecinService
         Medecin medecin = medecinRepository.findById(id)
         .orElseThrow(() -> new BusinessException("Medecin introuvable"));
 
+        if (!medecin.getEmail().equalsIgnoreCase(dto.getEmail()) && 
+        medecinRepository.findByEmail(dto.getEmail()).isPresent()) 
+        {
+            throw new BusinessException("L'email " + dto.getEmail() + " est déjà utilisé.");
+        }
+
         medecin.setNom(dto.getNom());
         medecin.setPrenom(dto.getPrenom());
         medecin.setEmail(dto.getEmail());
         medecin.setTelephone(dto.getTelephone());
         medecin.setSpecialite(dto.getSpecialite());
         medecin.setNumeroOrdre(dto.getNumeroOrdre());
+        if(dto.getPassword() != null && !dto.getPassword().isBlank())
+        {
+            medecin.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
 
         return medecinRepository.save(medecin);
     }

@@ -1,6 +1,7 @@
 package sn.gestion_hospital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,9 @@ public class UserService
 
     @Autowired
     private MedecinService medecinService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     @Transactional(readOnly = true)
     public List<User> getAllUsers() 

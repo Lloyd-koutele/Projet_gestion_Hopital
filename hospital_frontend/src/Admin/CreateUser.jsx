@@ -1,19 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import { createMedecin, createChercheur, createAdmin } from "../services/admin/adminServices";
 
-function CreateUser({onSuccess}) {
+function CreateUser({ onSuccess }) {
     const [users, setUsers] = useState({
         nom: "",
-        prenom:"",
+        prenom: "",
         email: "",
         password: "",
         role: "",
-        telephone:"",
-        specialiteRecherche:"",
-        specialite:"",
-        numeroOrdre:"",
-        departement:""
+        telephone: "",
+        specialiteRecherche: "",
+        specialite: "",
+        numeroOrdre: "",
+        departement: ""
     });
 
     const [error, setError] = useState("");
@@ -27,43 +26,35 @@ function CreateUser({onSuccess}) {
         });
     };
 
-    const validateForm = () =>{
-        if(!users.nom || !users.prenom || users.email || !users.password || !users.role || !users.departement || !users.telephone)
-        {
+    const validateForm = () => {
+        if (!users.nom || !users.prenom || !users.email || !users.password || !users.role || !users.telephone) {
             setError('Tous les champs sont obligatoires');
             return false;
         }
 
-        if(users.role === 'MEDECIN')
-        {
-            if(!users.specialite || !users.numeroOrdre)
-            {
+        if (users.role === 'MEDECIN') {
+            if (!users.specialite || !users.numeroOrdre) {
                 setError('La specialite et le numero d\'ordre sont obligatoires');
                 return false;
             }
         }
 
-        if(users.role = 'CHERCHEUR')
-        {
-            if(!users.specialiteRecherche)
-            {
+        if (users.role === 'CHERCHEUR') {
+            if (!users.specialiteRecherche) {
                 setError('La specialite de recherche est requise');
                 return false;
             }
         }
 
-        if (users.role = 'ADMIN')
-        {
-            if(!users.departement)
-            {
+        if (users.role === 'ADMIN') {
+            if (!users.departement) {
                 setError('Le departement est requis');
                 return false;
             }
         }
 
-        const falidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(!falidEmail.test(users.email))
-        {
+        const validEmail = /^\S+@\S+\.\S+$/;
+        if (!validEmail.test(users.email)) {
             setError('Email invalide');
             return false;
         }
@@ -71,20 +62,20 @@ function CreateUser({onSuccess}) {
         setError('');
         return true;
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
 
-        if(!validateForm()) return;
+        if (!validateForm()) return;
 
-        try{
+        try {
             let response;
-            switch(users.role){
+            switch (users.role) {
                 case 'MEDECIN':
                     response = await createMedecin({
-                        nom : users.nom,
+                        nom: users.nom,
                         prenom: users.prenom,
                         email: users.email,
                         password: users.password,
@@ -123,31 +114,23 @@ function CreateUser({onSuccess}) {
 
             setSuccess('Utilisateur cree avec succes');
             setUsers({
-                    nom:'',
-                    prenom:'',
-                    password:'',
-                    role:'',
-                    telephone:'',
-                    specialiteRecherche:'',
-                    specialite:'',
-                    numeroOrdre:'',
-                    departement:''
-                });
+                nom: '',
+                prenom: '',
+                password: '',
+                email: '',
+                role: '',
+                telephone: '',
+                specialiteRecherche: '',
+                specialite: '',
+                numeroOrdre: '',
+                departement: ''
+            });
 
-            if(onSuccess)
-            {
-                if(onSuccess)
-                {
-                    onSuccess();
-                }
-            }
-            else
-            {
-                setError(response.message || 'Erreur lors de la creation de l\'utilisateur');
+            if (onSuccess) {
+                onSuccess();
             }
         }
-        catch(error)
-        {
+        catch (error) {
             console.error("Erreur lors de la creation de l'utilisateur: ", error);
             if (error.response?.data?.message) {
                 setError(error.response.data.message);
@@ -156,8 +139,6 @@ function CreateUser({onSuccess}) {
             } else {
                 setError('Erreur lors de la création de l\'utilisateur');
             }
-            
-            setError(error.message || 'Erreur lors de la creation de l\'utilisateur');
         }
     };
 
@@ -166,18 +147,16 @@ function CreateUser({onSuccess}) {
 
     //Focus sur le premier champ
     useEffect(() => {
-        if(firstInputRef.current)
-        {
+        if (firstInputRef.current) {
             firstInputRef.current.focus();
         }
     }, []);
 
     //Mise a jour en cas de changement de role
-    useEffect(() =>{
-        if(firstInputRef.current){
+    useEffect(() => {
+        if (firstInputRef.current) {
             const parentModal = firstInputRef.current.closest('.modal-content');
-            if(parentModal)
-            {
+            if (parentModal) {
                 setTimeout(() => {
                     parentModal.scrollTop = 0;
                 }, 50);
@@ -185,15 +164,15 @@ function CreateUser({onSuccess}) {
         }
     }, [users.role]); // Se declanche quand le role change
 
-    return(
+    return (
         <div className="" ref={firstInputRef}>
-            {error &&(
+            {error && (
                 <div className="">
                     {error}
                 </div>
             )}
 
-            {success &&(
+            {success && (
                 <div className="">
                     {success}
                 </div>
@@ -227,6 +206,7 @@ function CreateUser({onSuccess}) {
                                     value={users.nom}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Nom"
                                     required
                                 />
                             </div>
@@ -241,6 +221,7 @@ function CreateUser({onSuccess}) {
                                     value={users.prenom}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Prenom"
                                     required
                                 />
                             </div>
@@ -255,6 +236,7 @@ function CreateUser({onSuccess}) {
                                     value={users.email}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Email"
                                     required
                                 />
                             </div>
@@ -269,6 +251,7 @@ function CreateUser({onSuccess}) {
                                     value={users.telephone}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Telephone"
                                     required
                                 />
                             </div>
@@ -278,11 +261,12 @@ function CreateUser({onSuccess}) {
                             <div className="">
                                 Mot de passe:
                                 <input
-                                    type={showPassword? "text" : 'password'}
+                                    type={showPassword ? "text" : 'password'}
                                     name='password'
                                     value={users.password}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Password"
                                     required
                                 />
                             </div>
@@ -291,7 +275,7 @@ function CreateUser({onSuccess}) {
                                 onClick={() => setShowPassword(!showPassword)}
                                 className=""
                             >
-                                {showPassword? 'Cacher' : 'Afficher'}
+                                {showPassword ? 'Cacher' : 'Afficher'}
                             </button>
                         </div>
                     </div>
@@ -306,20 +290,21 @@ function CreateUser({onSuccess}) {
                                     value={users.specialite}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Specialite"
                                     required
                                 />
                             </label>
 
                             <label className="">
                                 Numero d'ordre:
-                                   <input
-                                        type = "text"
-                                        name="numeroOdre">
-                                        value={users.numeroOrdre}
-                                        onChange={handleChange}
-                                        className=""
-                                        required
-                                   </input>
+                                <input
+                                    type="text"
+                                    name="numeroOrdre"
+                                    value={users.numeroOrdre}
+                                    onChange={handleChange}
+                                    placeholder="Numero d'ordre"
+                                    required
+                                />
                             </label>
                         </div>
                     )}
@@ -334,6 +319,7 @@ function CreateUser({onSuccess}) {
                                     value={users.specialiteRecherche}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Specialite"
                                     required
                                 />
                             </label>
@@ -350,6 +336,7 @@ function CreateUser({onSuccess}) {
                                     value={users.departement}
                                     onChange={handleChange}
                                     className=""
+                                    placeholder="Departement"
                                     required
                                 />
                             </label>
@@ -363,7 +350,6 @@ function CreateUser({onSuccess}) {
                         >
                             creer l'utilisateur
                         </button>
-                        
                     </div>
 
                 </div>

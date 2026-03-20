@@ -28,8 +28,8 @@ const UserTable = memo(({ users, onAction, actionInProgress }) => {
         }   
     }
 
-    const getStatusLabel = (status) =>{
-        const normalized = normalizeRole(status);
+    const getStatusLabel = (actif) =>{
+        const normalized = normalizeRole(actif);
         switch (normalized) {
             case 'true':
                 return 'Actif';
@@ -40,15 +40,6 @@ const UserTable = memo(({ users, onAction, actionInProgress }) => {
         }   
     }
 
-    const getRoleColor = (role) => {
-    const normalized = normalizeRole(role);
-    return {
-      'ADMIN': '#3b82f6',
-      'MEDECIN': '#10b981',
-      'CHERCHEUR': '#f59e0b'
-    }[normalized] || '#6b7280';
-  };
-
   if(!Array.isAsrray(users) || users.length ===0){
     return(
         <div className='empty-state'>
@@ -57,6 +48,50 @@ const UserTable = memo(({ users, onAction, actionInProgress }) => {
         </div>
     );
   }
+
+  return (
+
+    <div className="table-container">
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.name}" " {user.prenom}</td>
+              <td>{user.email}</td>
+              <td>{getRoleLabel(user.role)}</td>
+              <td>{getStatusLabel(user.actif)}</td>
+              <td>
+                <button
+                  onClick={() => onAction(user.id, 'edit')}
+                  disabled={actionInProgress}
+                  className="action-button edit"
+                >
+                  Modifier
+                </button>
+                <button
+                  onClick={() => onAction(user.id, 'block-unblock')}
+                  disabled={actionInProgress}
+                  className="block-unblock"
+                >
+                  {user.actif === 'true' ? 'Bloquer' : 'Debloquer'}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+  )
 
 });
 
