@@ -57,6 +57,8 @@ public class Medecin extends User
     @JsonBackReference(value = "medecin-acces-recus")
     private final List<AutorisationAccesPatient> autorisationsRecues = new ArrayList<>();
 
+    private Role role;
+
 
     public Medecin(String nom, String prenom, String email, String password, String telephone, String specialite, String numeroOrdre) 
     {

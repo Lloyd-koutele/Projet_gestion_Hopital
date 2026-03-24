@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap');
+
+:root {
+    --modal-primary: #21a1ac;
+    --modal-primary-hover: #27bbc8;
+    --modal-glass-bg: rgba(4, 24, 26, 0.75);
+    --modal-glass-border: rgba(255, 255, 255, 0.12);
+    --modal-text: #ffffff;
+    --modal-text-muted: rgba(255, 255, 255, 0.50);
+    --modal-input-border: rgba(255, 255, 255, 0.25);
+    --modal-success-bg: rgba(46, 204, 113, 0.15);
+    --modal-success-border: rgba(46, 204, 113, 0.40);
+    --modal-error-bg: rgba(220, 53, 69, 0.15);
+    --modal-error-border: rgba(220, 53, 69, 0.40);
+}
+
+/* ── Overlay ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.60);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+/* ── Carte glass ── */
+.modal-content {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--modal-glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--modal-glass-border);
+    border-radius: 22px;
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.60),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    animation: modalFadeIn 0.35s ease forwards;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* scrollbar discrète */
+.modal-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: rgba(33, 161, 172, 0.35);
+    border-radius: 4px;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Header ── */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px 16px;
+    background: rgba(33, 161, 172, 0.3);
+    color: #a8f0f5;
+    border: 1px solid rgba(33, 161, 172, 0.5);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 6px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+}
+
+.modal-header h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 4px;
+    background: rgba(33, 161, 172, 0.3);
+    color: #a8f0f5;
+    border: 1px solid rgba(33, 161, 172, 0.5);
+    position: relative;
+    left: 59px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+}
+
+.modal-header button {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--modal-text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.modal-header button:hover {
+    background: rgba(33, 161, 172, 0.25);
+    color: #ffffff;
+    border-color: rgba(33, 161, 172, 0.50);
+}
+
+/* ── Body ── */
+.modal-body {
+    padding: 24px 28px 28px;
+}

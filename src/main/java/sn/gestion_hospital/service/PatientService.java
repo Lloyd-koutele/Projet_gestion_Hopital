@@ -71,6 +71,11 @@ public class PatientService
             throw new BusinessException("Un patient avec cet email existe déjà : " + dto.getEmail());
         });
 
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) 
+        {
+            throw new BusinessException("Le mot de passe est obligatoire");
+        }
+
         // 3. Vérifier que l'utilisateur actuel est bien authentifié
         medecinService.getMedecinConnecte()
                 .orElseThrow(() -> new BusinessException("Action non autorisée : médecin non authentifié"));

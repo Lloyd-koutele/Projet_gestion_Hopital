@@ -45,12 +45,12 @@ public class AuthService
         } 
         catch (IllegalArgumentException e) 
         {
-            return AuthResponse.failed("Rôle invalide");
+            return AuthResponse.failed("Email ou mot de passe incorrect");
         }
 
         if (!user.getRoles().equals(requestedRole)) 
         {
-            return AuthResponse.failed("Accès non autorisé pour ce rôle");
+            return AuthResponse.failed("Email ou mot de passe incorrect");
         }
 
         if(!user.isActif())

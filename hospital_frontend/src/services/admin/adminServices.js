@@ -7,11 +7,13 @@ export const createAdmin = async (adminData) => {
 
 export const updateAdmin = async (id, adminData) => {
     const response = await api.put(`/admin/update-admins/${id}`, adminData);
+    console.log("Données envoyées au serveur :", adminData);
     return response.data;
 };
 
-export const creataMedecin = async (medecinData) => {
+export const createMedecin = async (medecinData) => {
     const response = await api.post('/admin/create-medecins', medecinData);
+    console.log("Données envoyées au serveur :", medecinData);
     return response.data;
 };
 
@@ -20,13 +22,18 @@ export const updateMedecin = async (id, medecinData) => {
     return response.data;
 };
 
-export const creataChercheur = async (chercheurData) => {
+export const createChercheur = async (chercheurData) => {
     const response = await api.post('/admin/create-chercheurs', chercheurData);
     return response.data;
 };
 
 export const updateChercheur = async (id, chercheurData) => {
     const response = await api.put(`/admin/update-chercheurs/${id}`, chercheurData);
+    return response.data;
+};
+
+export const updateStatus = async (id, actif) => {
+    const response = await api.put(`/admin/users/status/${id}?etat=${actif}`);
     return response.data;
 };
 

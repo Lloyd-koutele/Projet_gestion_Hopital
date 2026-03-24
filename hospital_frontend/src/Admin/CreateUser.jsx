@@ -1,361 +1,159 @@
 import { useState, useEffect, useRef } from "react";
 import { createMedecin, createChercheur, createAdmin } from "../services/admin/adminServices";
+import '../style/CreateUser.css';
 
 function CreateUser({ onSuccess }) {
     const [users, setUsers] = useState({
-        nom: "",
-        prenom: "",
-        email: "",
-        password: "",
-        role: "",
-        telephone: "",
-        specialiteRecherche: "",
-        specialite: "",
-        numeroOrdre: "",
-        departement: ""
+        nom: "", prenom: "", email: "", password: "",
+        role: "", telephone: "", specialiteRecherche: "",
+        specialite: "", numeroOrdre: "", departement: ""
     });
-
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const firstInputRef = useRef(null);
 
-    const handleChange = (e) => {
-        setUsers({
-            ...users,
-            [e.target.name]: e.target.value
-        });
-    };
+    useEffect(() => { firstInputRef.current?.focus(); }, []);
+
+    const handleChange = (e) => setUsers({ ...users, [e.target.name]: e.target.value });
 
     const validateForm = () => {
-        if (!users.nom || !users.prenom || !users.email || !users.password || !users.role || !users.telephone) {
-            setError('Tous les champs sont obligatoires');
-            return false;
-        }
-
-        if (users.role === 'MEDECIN') {
-            if (!users.specialite || !users.numeroOrdre) {
-                setError('La specialite et le numero d\'ordre sont obligatoires');
-                return false;
-            }
-        }
-
-        if (users.role === 'CHERCHEUR') {
-            if (!users.specialiteRecherche) {
-                setError('La specialite de recherche est requise');
-                return false;
-            }
-        }
-
-        if (users.role === 'ADMIN') {
-            if (!users.departement) {
-                setError('Le departement est requis');
-                return false;
-            }
-        }
-
-        const validEmail = /^\S+@\S+\.\S+$/;
-        if (!validEmail.test(users.email)) {
-            setError('Email invalide');
-            return false;
-        }
-
+        if (!users.nom || !users.prenom || !users.email || !users.password || !users.role || !users.telephone)
+            return setError('Tous les champs sont obligatoires'), false;
+        if (users.role === 'MEDECIN' && (!users.specialite || !users.numeroOrdre))
+            return setError("La spécialité et le numéro d'ordre sont obligatoires"), false;
+        if (users.role === 'CHERCHEUR' && !users.specialiteRecherche)
+            return setError('La spécialité de recherche est requise'), false;
+        if (users.role === 'ADMIN' && !users.departement)
+            return setError('Le département est requis'), false;
+        if (!/^\S+@\S+\.\S+$/.test(users.email))
+            return setError('Email invalide'), false;
         setError('');
         return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
-
+        setError(''); setSuccess('');
         if (!validateForm()) return;
-
         try {
-            let response;
-            switch (users.role) {
-                case 'MEDECIN':
-                    response = await createMedecin({
-                        nom: users.nom,
-                        prenom: users.prenom,
-                        email: users.email,
-                        password: users.password,
-                        specialite: users.specialite,
-                        numeroOrdre: users.numeroOrdre,
-                        telephone: users.telephone
-                    });
-                    break;
-
-                case 'CHERCHEUR':
-                    response = await createChercheur({
-                        nom: users.nom,
-                        prenom: users.prenom,
-                        email: users.email,
-                        password: users.password,
-                        specialiteRecherche: users.specialiteRecherche,
-                        telephone: users.telephone
-                    });
-                    break;
-
-                case 'ADMIN':
-                    response = await createAdmin({
-                        nom: users.nom,
-                        prenom: users.prenom,
-                        email: users.email,
-                        password: users.password,
-                        departement: users.departement,
-                        telephone: users.telephone
-                    });
-                    break;
-
-                default:
-                    setError('Role invalide');
-                    return;
-            }
-
-            setSuccess('Utilisateur cree avec succes');
-            setUsers({
-                nom: '',
-                prenom: '',
-                password: '',
-                email: '',
-                role: '',
-                telephone: '',
-                specialiteRecherche: '',
-                specialite: '',
-                numeroOrdre: '',
-                departement: ''
-            });
-
-            if (onSuccess) {
-                onSuccess();
-            }
-        }
-        catch (error) {
-            console.error("Erreur lors de la creation de l'utilisateur: ", error);
-            if (error.response?.data?.message) {
-                setError(error.response.data.message);
-            } else if (error.message) {
-                setError(error.message);
-            } else {
-                setError('Erreur lors de la création de l\'utilisateur');
-            }
+            const base = { nom: users.nom, prenom: users.prenom, email: users.email, password: users.password, telephone: users.telephone };
+            if (users.role === 'MEDECIN') await createMedecin({ ...base, specialite: users.specialite, numeroOrdre: users.numeroOrdre });
+            else if (users.role === 'CHERCHEUR') await createChercheur({ ...base, specialiteRecherche: users.specialiteRecherche });
+            else if (users.role === 'ADMIN') await createAdmin({ ...base, departement: users.departement });
+            else return setError('Rôle invalide');
+            setSuccess('Utilisateur créé avec succès');
+            setUsers({ nom: '', prenom: '', password: '', email: '', role: '', telephone: '', specialiteRecherche: '', specialite: '', numeroOrdre: '', departement: '' });
+            setTimeout(() => onSuccess?.(), 4000);
+        } catch (err) {
+            setError(err.response?.data?.message || err.message || "Erreur lors de la création");
         }
     };
 
-    //Reference pour le focus automatique
-    const firstInputRef = useRef(null);
-
-    //Focus sur le premier champ
-    useEffect(() => {
-        if (firstInputRef.current) {
-            firstInputRef.current.focus();
-        }
-    }, []);
-
-    //Mise a jour en cas de changement de role
-    useEffect(() => {
-        if (firstInputRef.current) {
-            const parentModal = firstInputRef.current.closest('.modal-content');
-            if (parentModal) {
-                setTimeout(() => {
-                    parentModal.scrollTop = 0;
-                }, 50);
-            }
-        }
-    }, [users.role]); // Se declanche quand le role change
-
     return (
-        <div className="" ref={firstInputRef}>
-            {error && (
-                <div className="">
-                    {error}
-                </div>
-            )}
-
-            {success && (
-                <div className="">
-                    {success}
-                </div>
-            )}
+        <div>
+            {error && <div className="form-error">{error}</div>}
+            {success && <div className="form-success">{success}</div>}
 
             <form onSubmit={handleSubmit}>
-                <div className="">
-                    <div className="">
-                        <div className="">
-                            Rôle:
-                            <select
-                                ref={firstInputRef}
-                                name="role"
-                                value={users.role}
-                                onChange={handleChange}
-                                className=""
-                            >
-                                <option value="">Selectionner un rôle</option>
-                                <option value="MEDECIN">Médecin</option>
-                                <option value="CHERCHEUR">Chercheur</option>
-                                <option value="ADMIN">Administrateur</option>
-                            </select>
-                        </div>
+                <div className="form-grid">
 
-                        <div className="">
-                            <div className="">
-                                Nom:
-                                <input
-                                    type='text'
-                                    name='nom'
-                                    value={users.nom}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Nom"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="">
-                            <div className="">
-                                Prenom:
-                                <input
-                                    type='text'
-                                    name='prenom'
-                                    value={users.prenom}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Prenom"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="">
-                            <div className="">
-                                Email:
-                                <input
-                                    type='email'
-                                    name='email'
-                                    value={users.email}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Email"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="">
-                            <div className="">
-                                Telephone:
-                                <input
-                                    type='text'
-                                    name='telephone'
-                                    value={users.telephone}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Telephone"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="">
-                            <div className="">
-                                Mot de passe:
-                                <input
-                                    type={showPassword ? "text" : 'password'}
-                                    name='password'
-                                    value={users.password}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Password"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type='button'
-                                onClick={() => setShowPassword(!showPassword)}
-                                className=""
-                            >
-                                {showPassword ? 'Cacher' : 'Afficher'}
-                            </button>
-                        </div>
+                    {/* RÔLE */}
+                    <div className="form-field">
+                        <select
+                            ref={firstInputRef}
+                            name="role"
+                            className={`form-field-input${users.role ? ' has-value' : ''}`}
+                            value={users.role}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled hidden></option>
+                            <option value="MEDECIN">Médecin</option>
+                            <option value="CHERCHEUR">Chercheur</option>
+                            <option value="ADMIN">Administrateur</option>
+                        </select>
+                        <label>Rôle</label>
                     </div>
 
-                    {users.role === 'MEDECIN' && (
-                        <div className="">
-                            <label className="">
-                                Spécialité:
-                                <input
-                                    type='text'
-                                    name='specialite'
-                                    value={users.specialite}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Specialite"
-                                    required
-                                />
-                            </label>
+                    {/* NOM */}
+                    <div className="form-field">
+                        <input type="text" name="nom" placeholder=" " className="form-field-input"
+                            value={users.nom} onChange={handleChange} required />
+                        <label>Nom</label>
+                    </div>
 
-                            <label className="">
-                                Numero d'ordre:
-                                <input
-                                    type="text"
-                                    name="numeroOrdre"
-                                    value={users.numeroOrdre}
-                                    onChange={handleChange}
-                                    placeholder="Numero d'ordre"
-                                    required
-                                />
-                            </label>
-                        </div>
-                    )}
+                    {/* PRÉNOM */}
+                    <div className="form-field">
+                        <input type="text" name="prenom" placeholder=" " className="form-field-input"
+                            value={users.prenom} onChange={handleChange} required />
+                        <label>Prénom</label>
+                    </div>
 
-                    {users.role === 'CHERCHEUR' && (
-                        <div className="">
-                            <label className="">
-                                Specialite Recherche:
-                                <input
-                                    type='text'
-                                    name='specialiteRecherche'
-                                    value={users.specialiteRecherche}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Specialite"
-                                    required
-                                />
-                            </label>
-                        </div>
-                    )}
+                    {/* EMAIL */}
+                    <div className="form-field">
+                        <input type="email" name="email" placeholder=" " className="form-field-input"
+                            value={users.email} onChange={handleChange} required />
+                        <label>Email</label>
+                    </div>
 
-                    {users.role === 'ADMIN' && (
-                        <div className="">
-                            <label className="">
-                                Departement:
-                                <input
-                                    type='text'
-                                    name='departement'
-                                    value={users.departement}
-                                    onChange={handleChange}
-                                    className=""
-                                    placeholder="Departement"
-                                    required
-                                />
-                            </label>
-                        </div>
-                    )}
+                    {/* TÉLÉPHONE */}
+                    <div className="form-field">
+                        <input type="text" name="telephone" placeholder=" " className="form-field-input"
+                            value={users.telephone} onChange={handleChange} required />
+                        <label>Téléphone</label>
+                    </div>
 
-                    <div className="">
-                        <button
-                            type='submit'
-                            className=""
-                        >
-                            creer l'utilisateur
+                    {/* MOT DE PASSE */}
+                    <div className="form-field form-field-password">
+                        <input type={showPassword ? "text" : "password"} name="password" placeholder=" "
+                            className="form-field-input" value={users.password} onChange={handleChange} required />
+                        <label>Mot de passe</label>
+                        <button type="button" className="password-toggle-btn"
+                            onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? 'masquer' : 'afficher'}
                         </button>
                     </div>
 
+                    {/* CHAMPS CONDITIONNELS */}
+                    {users.role === 'MEDECIN' && <>
+                        <hr className="form-section-divider" />
+                        <div className="form-field">
+                            <input type="text" name="specialite" placeholder=" " className="form-field-input"
+                                value={users.specialite} onChange={handleChange} required />
+                            <label>Spécialité</label>
+                        </div>
+                        <div className="form-field">
+                            <input type="text" name="numeroOrdre" placeholder=" " className="form-field-input"
+                                value={users.numeroOrdre} onChange={handleChange} required />
+                            <label>Numéro d'ordre</label>
+                        </div>
+                    </>}
+
+                    {users.role === 'CHERCHEUR' && <>
+                        <hr className="form-section-divider" />
+                        <div className="form-field">
+                            <input type="text" name="specialiteRecherche" placeholder=" " className="form-field-input"
+                                value={users.specialiteRecherche} onChange={handleChange} required />
+                            <label>Spécialité de recherche</label>
+                        </div>
+                    </>}
+
+                    {users.role === 'ADMIN' && <>
+                        <hr className="form-section-divider" />
+                        <div className="form-field">
+                            <input type="text" name="departement" placeholder=" " className="form-field-input"
+                                value={users.departement} onChange={handleChange} required />
+                            <label>Département</label>
+                        </div>
+                    </>}
+
+                    <button type="submit" className="form-submit-btn">
+                        Créer l'utilisateur
+                    </button>
                 </div>
             </form>
         </div>
-    )
-};
+    );
+}
 
 export default CreateUser;

@@ -46,7 +46,8 @@ export const loginUser = async (email, password, role) => {
 
   } catch (error) {
     console.error('Erreur connexion:', error);
-    await logout(); // Nettoyage en cas d'erreur
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
     throw error;
   }
 };
@@ -68,7 +69,7 @@ export const isAuthenticated = () => {
   return decoded ? (!decoded.exp || decoded.exp * 1000 > Date.now()) : false;
 };
 
-// Récupération simple : on lit le localStorage (plus besoin de parser le token à chaque fois)
+// Récupération simple : on lit le localStorage
 export const getCurrentUserInfo = () => {
   try {
     return JSON.parse(localStorage.getItem('userInfo'));

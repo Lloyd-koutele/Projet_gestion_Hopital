@@ -1,29 +1,32 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import '../style/Sidebar.css';
 
-function Sidebar({title, children}) {
+function Sidebar({ title, children }) {
     const [open, setOpen] = useState(true);
+
     return (
-        <sidebar>
-            <div className={open ? 'sidebar-open' : 'sidebar-closed'}>
-                <div className='sidebar-header'>
-                    {open && <h2 className='titre'> {title} </h2>}
-                    <button onClick={() => setOpen(!open)}
-                        className='toggle-button'
-                    >
-                        {open ? "x" : "→"}
-                    </button>
-                </div>
+        <aside className={open ? 'sidebar sidebar-open' : 'sidebar sidebar-closed'}>
+            <div className='sidebar-header'>
+                <button onClick={() => setOpen(!open)} className='toggle-button'>
+                    {open ? "X" : "->"}
+                </button>
+            </div>
+
+            {open && (
                 <div className='sidebar-content'>
                     {children}
                 </div>
-            </div>
-            <button 
-            className='logout-button'
-            onClick={() => { window.location.href = '/login'; }}>
-                Se deconnecter
-            </button>
-        </sidebar>
+            )}
+
+            {open &&
+                <button
+                    className='logout-button'
+                    onClick={() => { window.location.href = '/login'; }}
+                >
+                    Se déconnecter
+                </button>
+            }
+        </aside>
     );
 }
 

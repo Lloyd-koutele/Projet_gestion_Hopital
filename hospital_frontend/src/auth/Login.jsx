@@ -1,6 +1,4 @@
-// src/auth/Login.jsx
 import React, { useState } from 'react';
-
 import { loginUser } from './authService';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../style/login.css';
@@ -16,21 +14,16 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     if (!email || !password || !role) {
       setError("Veuillez remplir tous les champs.");
       return;
     }
-
     setIsLoading(true);
-
     try {
       await loginUser(email, password, role);
-
     } catch (error) {
       console.error('Erreur de connexion:', error);
       setIsLoading(false);
-
       const errorMessage = error.response?.data?.message || error.message || "Erreur de connexion.";
       setError(errorMessage);
     }
@@ -47,81 +40,79 @@ function Login() {
         {error && <div className="error-message">{error}</div>}
 
         <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="role">Rôle</label>
+
+          {/* RÔLE */}
+          <div className="field">
             <select
               id="role"
-              className="form-control"
+              className={`field-input${role ? ' has-value' : ''}`}
               value={role}
               onChange={(e) => setRole(e.target.value)}
               required
               disabled={isLoading}
             >
-              <option value="">-- Choisir un rôle --</option>
+              <option value="" disabled hidden></option>
               <option value="ADMIN">Admin</option>
               <option value="MEDECIN">Médecin</option>
               <option value="CHERCHEUR">Chercheur</option>
               <option value="PATIENT">Patient</option>
             </select>
+            <label htmlFor="role">Rôle</label>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+          {/* EMAIL */}
+          <div className="field">
             <input
               id="email"
               type="email"
-              className="form-control"
-              placeholder="Votre email"
+              className="field-input"
+              placeholder=" "
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={isLoading}
             />
+            <label htmlFor="email">Email</label>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Mot de passe</label>
-            <div className="password-field">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                className="form-control"
-                placeholder="Votre mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-                disabled={isLoading}
-                aria-label={showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-          </div>
-
-          <div className='container'>
-            <button
-              type="submit"
-              className="login-button"
+          {/* MOT DE PASSE */}
+          <div className="field">
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              className="field-input"
+              placeholder=" "
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               disabled={isLoading}
-            >
-              {isLoading ? 'Connexion en cours...' : 'Se connecter'}
-            </button>
-
+            />
+            <label htmlFor="password">Mot de passe</label>
             <button
-              type="submit"
-              className='button-retour'
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              disabled={isLoading}
+              aria-label={showPassword ? 'Cacher' : 'Afficher'}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+
+          <div className="container">
+            <button type="submit" className="login-button" disabled={isLoading}>
+              {isLoading ? 'Connexion...' : 'Se connecter'}
+            </button>
+            <button
+              type="button"
+              className="button-retour"
               onClick={() => { window.location.href = '/'; }}
             >
               Retour
             </button>
           </div>
-
 
         </form>
       </div>

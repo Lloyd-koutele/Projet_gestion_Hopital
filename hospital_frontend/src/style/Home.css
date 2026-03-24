@@ -49,6 +49,7 @@ h2 {
     justify-content: center;
     padding: 20px 0;
     overflow: hidden;
+    overflow-y: hidden;
 }
 
 .button {
@@ -66,7 +67,7 @@ h2 {
     transition: all 0.3s ease;
     max-width: 200px;
     position: relative;
-    top: -80px;
+    margin-top: -40px;
 }
 
 .button:hover {

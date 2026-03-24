@@ -11,6 +11,7 @@ import sn.gestion_hospital.entite.Admin;
 import sn.gestion_hospital.exception.BusinessException;
 import sn.gestion_hospital.repository.AdminRepository;
 import sn.gestion_hospital.repository.UserRepository;
+import sn.gestion_hospital.entite.Role;
 
 /**
  * Service responsable de la gestion des administrateurs
@@ -28,13 +29,7 @@ public class AdminService
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    /**
-     * Crée un nouvel administrateur
-     * 
-     * @param dto les données de l'administrateur à créer
-     * @return l'administrateur créé
-     * @throws BusinessException si les données sont invalides ou si l'email est déjà utilisé
-     */
+
     @Transactional
     public Admin createAdmin(AdminCreationDTO dto) 
     {
@@ -45,16 +40,21 @@ public class AdminService
         {
             throw new BusinessException("Cet email est déjà utilisé");
         }
+
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) 
+        {
+            throw new BusinessException("Le mot de passe est obligatoire");
+        }
         
         // Créer et sauvegarder l'administrateur
-        Admin admin = new Admin(
-            dto.getNom(),
-            dto.getPrenom(),
-            dto.getEmail(),
-            passwordEncoder.encode(dto.getPassword()),
-            dto.getTelephone(),
-            dto.getDepartement()
-        );
+        Admin admin = new Admin();
+        admin.setNom(dto.getNom());
+        admin.setPrenom(dto.getPrenom());
+        admin.setEmail(dto.getEmail());
+        admin.setPassword(passwordEncoder.encode(dto.getPassword()));
+        admin.setTelephone(dto.getTelephone());
+        admin.setDepartement(dto.getDepartement());
+        admin.setRoles(Role.ADMIN);
         
         return adminRepository.save(admin);
     }

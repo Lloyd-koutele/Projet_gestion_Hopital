@@ -1,23 +1,17 @@
 import React from 'react';
-import { getCurrentUserInfo } from '../services/authService';
-function Header() {
-    const role = getCurrentUserInfo.role;
-    return (
-        <header>
-            <h2> Bienvenue sur le site
+import { getCurrentUserInfo } from "../auth/authService";
+import "../style/Header.css";
 
-                if (role == "ADMIN"){
-                    "admin " + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
-                }
-                else if (role == "MEDECIN"){
-                    "Dr " + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
-                }
-                else if (role == "CHERCHEUR"){
-                    "chercheur "  + getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
-                }
-                else if (role == "PATIENT"){
-                    "patient "+ getCurrentUserInfo.prenom + " " + getCurrentUserInfo.nom
-                }
+function Header() {
+    const userInfo = getCurrentUserInfo();
+    return (
+        <header className="style-header">
+            <h2 className="titre">
+                Bienvenue sur MedConnect{" "}
+                {userInfo?.role === "ADMIN" && `Admin ${userInfo.prenom} ${userInfo.nom}`}
+                {userInfo?.role === "MEDECIN" && `Dr ${userInfo.prenom} ${userInfo.nom}`}
+                {userInfo?.role === "CHERCHEUR" && `Chercheur ${userInfo.prenom} ${userInfo.nom}`}
+                {userInfo?.role === "PATIENT" && `Patient ${userInfo.prenom} ${userInfo.nom}`}
             </h2>
         </header>
     );

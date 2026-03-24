@@ -82,6 +82,8 @@ public class Patient extends User
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RendezVous> rendezVous = new ArrayList<>();
 
+    private Role role;
+
     public Patient(String nom, String prenom, String email, DossierMedical dossierMedical, Date dateNaissance, String telephone) 
     {
         this.nom = nom;

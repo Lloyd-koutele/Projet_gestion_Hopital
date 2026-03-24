@@ -1,0 +1,59 @@
+/* ── Pagination.css ── */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 1.2rem 1.5rem 0.5rem;
+}
+
+/* ── Boutons communs ── */
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.82rem;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: rgba(33, 161, 172, 0.2);
+    border-color: rgba(33, 161, 172, 0.4);
+    color: #a8f0f5;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+/* ── Page active ── */
+.pagination-btn.pagination-active {
+    background: rgba(33, 161, 172, 0.25);
+    border-color: rgba(33, 161, 172, 0.6);
+    color: #a8f0f5;
+    font-weight: 500;
+    box-shadow: 0 0 10px rgba(33, 161, 172, 0.2);
+}
+
+/* ── Flèches de navigation ── */
+.pagination-btn.pagination-nav {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.pagination-btn.pagination-nav:hover:not(:disabled) {
+    color: #a8f0f5;
+}

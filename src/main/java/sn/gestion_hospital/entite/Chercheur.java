@@ -24,6 +24,8 @@ public class Chercheur extends User
         super();
     }
 
+    private Role role;
+
     public Chercheur(String nom, String prenom, String email, String password, String telephone, String specialiteRecherche) 
     {
         super();

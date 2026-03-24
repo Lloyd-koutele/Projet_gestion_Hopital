@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.style-header {
+    padding: 14px 24px;
+    background: linear-gradient(to right, #1a4567 0%, #21a1ac 50%, #26c4d1 100%);
+    color: white;
+    font-size: 1rem;
+    font-family: "Cinzel Decorative", serif;
+    font-weight: 400;
+}
+
+.style-header .titre {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    letter-spacing: 5px;
+    font-family: "Bebas Neue", sans-serif;
+}

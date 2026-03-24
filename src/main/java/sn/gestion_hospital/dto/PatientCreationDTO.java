@@ -4,51 +4,42 @@ import java.util.Date;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 @Data
+@NoArgsConstructor 
+@AllArgsConstructor
 @Schema(description = "DTO pour la création d'un patient")
-public class PatientCreationDTO {
+public class PatientCreationDTO 
+{
     
-    @Schema(description = "Nom du patient", example = "Dupont")
-    @NotBlank(message = "Le nom est obligatoire")
     private String nom;
 
-    @Schema(description = "Prénom du patient", example = "Jean")
-    @NotBlank(message = "Le prénom est obligatoire")
+    
     private String prenom;
 
-    @Schema(description = "Email du patient", example = "jean.dupont@email.com")
+  
     @Email(message = "L'email n'est pas valide")
-    @NotBlank(message = "L'email est obligatoire")
     private String email;
 
-    @Schema(description = "Date de naissance du patient", example = "1990-01-01")
-    @NotNull(message = "La date de naissance est obligatoire")
-    @Past(message = "La date de naissance doit être dans le passé")
     private Date dateNaissance;
 
-    @Schema(description = "Numéro de téléphone du patient", example = "771234567")
-    @NotBlank(message = "Le numéro de téléphone est obligatoire")
+   
     private String telephone;
     
-    @Schema(description = "Sexe du patient (M ou F)", example = "M")
-    @NotBlank(message = "Le sexe est obligatoire")
+    
     private String sexe;
 
-    @Schema(description = "Poids du patient", example = "80 Kg")
-    @NotNull(message = "Le poids est obligatoire")
+    
     private String poids;
 
-    @Schema(description = "Taille du patient", example = "180 cm")
-    @NotNull(message = "La taille est obligatoire")
+    
     private String taille;
 
-    @Schema(description = "Le mot de passe du patient", example = "password")
-    @NotNull(message = "le mot de passe est obligatoire")
+    
     private String password;
     
     

@@ -24,6 +24,8 @@ public class Admin extends User
     @Column(nullable = false, length = 100)
     private String departement;
 
+    private Role role;
+
     public Admin(String nom, String prenom, String email, String password, String telephone, String departement) 
     {
         super();

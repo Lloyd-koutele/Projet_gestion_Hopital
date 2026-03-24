@@ -1,5 +1,7 @@
 package sn.gestion_hospital.service;
 
+import sn.gestion_hospital.entite.Role;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,14 +35,21 @@ public class ChercheurService {
             throw new BusinessException("Cet email est déjà utilisé");
         }
 
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) 
+        {
+            throw new BusinessException("Le mot de passe est obligatoire ");
+        }
+
         // Créer et sauvegarder le chercheur
-        Chercheur chercheur = new Chercheur(
-                dto.getNom(),
-                dto.getPrenom(),
-                dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword()),
-                dto.getTelephone(),
-                dto.getSpecialiteRecherche());
+        Chercheur chercheur = new Chercheur();
+        chercheur.setNom(dto.getNom());
+        chercheur.setPrenom(dto.getPrenom());
+        chercheur.setEmail(dto.getEmail());
+        chercheur.setPassword(passwordEncoder.encode(dto.getPassword()));
+        chercheur.setTelephone(dto.getTelephone());
+        chercheur.setSpecialiteRecherche(dto.getSpecialiteRecherche());
+        chercheur.setActif(true);
+        chercheur.setRoles(Role.CHERCHEUR);
 
         return chercheurRepository.save(chercheur);
     }

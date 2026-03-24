@@ -1,10 +1,24 @@
 .footer {
-    color: #fff;
+    padding: 14px 24px;
+    padding: 5px 12px;
+    background: rgba(33, 161, 172, 0.3);
+    color: #a8f0f5;
+    border: 1px solid rgba(33, 161, 172, 0.5);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 6px;
     text-align: center;
-    padding: 1rem;
-    background: linear-gradient(to right, #1a4567 0%, #21a1ac 50%, #26c4d1 100%);
-    width: 100vw;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transform: translateY(-120px);
-    padding: 20px 0;
+    color: white;
+    font-size: 1rem;
+    font-family: Segoe UI, sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -4,6 +4,8 @@ function Footer() {
         <footer>
             <p className="footer">© {new Date().getFullYear()} - Système de Gestion Hospitalière</p>
         </footer>
+
+
     );
 }
 

@@ -27,8 +27,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expiré ou invalide : nettoyer et rediriger
+        const url = error.config?.url || '';
+        const isAuthRoute = url.includes('/login') || url.includes('/logout');
+
+        if (error.response?.status === 401 && !isAuthRoute) {
             localStorage.clear();
             window.location.replace('/login');
         }

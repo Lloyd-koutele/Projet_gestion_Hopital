@@ -1,103 +1,126 @@
-.body{
-    background-color: #d7dcd7;
-    margin: 0;
-    padding: 0;
-    overflow-x: auto;
-}
-
 .table-container {
-    margin: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
     overflow: hidden;
+    margin: 1.5rem;
 }
 
-.table-header {
-    background-color: #21a1ac;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 8px 8px 0 0;
-}
-
-.table {
+/* === TABLE === */
+.user-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
 }
 
-.table th,
-.table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.user-table thead tr {
+    background: rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
 }
 
-.table th {
-    background-color: #f8f9fa;
-    color: #333;
-    font-weight: 600;
+.user-table th {
+    padding: 14px 16px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 12px;
     text-transform: uppercase;
-    font-size: 13px;
+    letter-spacing: 0.8px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-.table tbody tr:hover {
-    background-color: #f1f1f1;
+.user-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.2s ease;
 }
 
-.table tbody tr:last-child td {
+.user-table tbody tr:last-child {
     border-bottom: none;
 }
 
-.action-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-    margin-right: 5px;
+.user-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
+.user-table td {
+    padding: 13px 16px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+}
+
+/* === BADGES rôle === */
+.badge-role {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* === BADGES statut === */
+.badge-actif {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(46, 204, 113, 0.2);
+    color: #7effc0;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.badge-inactif {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(231, 76, 60, 0.2);
+    color: #ffaaaa;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* === BOUTONS === */
 .action-button.edit {
-    background-color: #21a1ac;
-    color: white;
+    padding: 5px 12px;
+    background: rgba(33, 161, 172, 0.3);
+    color: #a8f0f5;
+    border: 1px solid rgba(33, 161, 172, 0.5);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 6px;
 }
 
 .action-button.edit:hover {
-    background-color: #1a8a94;
+    background: rgba(33, 161, 172, 0.5);
 }
 
-.action-button.delete {
-    background-color: #e74c3c;
-    color: white;
+.block-unblock {
+    padding: 5px 12px;
+    background: rgba(231, 76, 60, 0.2);
+    color: #ffb3b3;
+    border: 1px solid rgba(231, 76, 60, 0.35);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.action-button.delete:hover {
-    background-color: #c0392b;
+.block-unblock:hover {
+    background: rgba(231, 76, 60, 0.4);
 }
 
-.action-button.block {
-    background-color: #f39c12;
-    color: white;
-}
-
-.action-button.block:hover {
-    background-color: #e67e22;
-}
-
+/* === EMPTY STATE === */
 .empty-state {
-    padding: 40px;
     text-align: center;
-    color: #666;
-    font-size: 16px;
-}
-
-.empty-state svg {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 15px;
-    opacity: 0.5;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.5);
 }

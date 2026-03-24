@@ -59,15 +59,20 @@ public class MedecinService
             throw new BusinessException("Cet email est déjà utilisé");
         }
 
-        Medecin medecin = new Medecin(
-            dto.getNom(),
-            dto.getPrenom(),
-            dto.getEmail(),
-            dto.getTelephone(),
-            dto.getSpecialite(),
-            passwordEncoder.encode(dto.getPassword()),
-            dto.getNumeroOrdre()
-        );
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) 
+        {
+            throw new BusinessException("Le mot de passe est obligatoire");
+        }
+
+        Medecin medecin = new Medecin();
+        medecin.setNom(dto.getNom());
+        medecin.setPrenom(dto.getPrenom());
+        medecin.setEmail(dto.getEmail());
+        medecin.setPassword(passwordEncoder.encode(dto.getPassword()));
+        medecin.setTelephone(dto.getTelephone());
+        medecin.setSpecialite(dto.getSpecialite());
+        medecin.setNumeroOrdre(dto.getNumeroOrdre());
+        medecin.setRoles(Role.MEDECIN);
 
         return medecinRepository.save(medecin);
     }

@@ -59,7 +59,7 @@ public class InitialAdminCreator implements CommandLineRunner
         {
             logger.info(
                     "L'administrateur initial existe déjà\n"
-                            + "Le login est : kooutelemarvinlloyd@gmail.com\n"
+                            + "Le login est : koutelemarvinlloyd@gmail.com\n"
                             + "Le mot de passe est : Marvic&21");
         }
     }

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import sn.gestion_hospital.dto.ChercheurCreationDTO;
 import sn.gestion_hospital.dto.MedecinCreationDTO;
 import sn.gestion_hospital.dto.AdminCreationDTO;
-import sn.gestion_hospital.dto.UserStatusUpdateDTO;
 import sn.gestion_hospital.service.AdminService;
 import sn.gestion_hospital.service.ChercheurService;
 import sn.gestion_hospital.service.MedecinService;
@@ -197,12 +197,12 @@ public class AdminController
     }
 
     @Secured("ROLE_ADMIN")
-    @PutMapping("/users/status")
-    public ResponseEntity<?> updateUserStatus(@Valid @RequestBody UserStatusUpdateDTO dto) 
+    @PutMapping("/users/status/{id}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable Long id, @RequestParam boolean etat) 
     {
         try 
         {
-            User updatedUser = userService.updateUserStatus(dto);
+            User updatedUser = userService.updateUserStatus(id, etat);
             return ResponseEntity.ok(updatedUser);
         } 
         catch (Exception e) 

@@ -1,12 +1,10 @@
 package sn.gestion_hospital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import sn.gestion_hospital.dto.UserStatusUpdateDTO;
 import sn.gestion_hospital.entite.User;
 import sn.gestion_hospital.entite.Role;
 import sn.gestion_hospital.entite.Admin;
@@ -34,15 +32,12 @@ public class UserService
 
     @Autowired
     private MedecinService medecinService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     
     @Transactional(readOnly = true)
     public List<User> getAllUsers() 
     {
-        return userRepository.findAll();
-    }
+    return userRepository.findAll();
+}
     
     @Transactional(readOnly = true)
     public List<User> getUsersByRole(Role role) 
@@ -81,18 +76,18 @@ public class UserService
     }
 
     @Transactional
-    public User updateUserStatus(UserStatusUpdateDTO dto) 
+    public User updateUserStatus(Long id, boolean etat) 
     {
-        if (dto == null || dto.getUserId() == null) 
+        if (id == null)
         {
-            throw new BusinessException("Les données de mise à jour sont invalides");
+            throw new BusinessException("L'ID est obligatoire");
         }
         
-        Optional<User> userOpt = userRepository.findById(dto.getUserId());
+        Optional<User> userOpt = userRepository.findById(id);
         User user = userOpt.orElseThrow(() -> 
-            new BusinessException("Utilisateur non trouvé avec l'ID: " + dto.getUserId()));
+            new BusinessException("Utilisateur non trouvé avec l'ID: " + id));
             
-        user.setActif(dto.isActif());
+        user.setActif(etat);
         return userRepository.save(user);
     }
 
