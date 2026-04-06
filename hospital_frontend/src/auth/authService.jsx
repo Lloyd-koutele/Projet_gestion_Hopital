@@ -4,7 +4,9 @@ import api from '../services/api';
 const parseJwt = (token) => {
   try {
     const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+    return JSON.parse(
+      decodeURIComponent(
+        atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
   } catch { return null; }
 };
 
@@ -14,8 +16,12 @@ export const loginUser = async (email, password, role) => {
     const { data } = await api.post('/login', { email, password, role });
     if (!data.token) throw new Error('Token non reçu');
 
+    if(!data.success) throw new Error(data.message || "Echec lors de l'authentification");
+    
     const token = data.token;
     const decoded = parseJwt(token);
+    if (!decoded) throw new Error('Token invalide');
+    
 
     // Normalisation du rôle venant du token (supporte 'role' ou 'roles')
     const tokenRole = decoded?.role || decoded?.roles || role;
@@ -29,7 +35,9 @@ export const loginUser = async (email, password, role) => {
       role: tokenRole
     };
 
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('refreshToken', data.refreshToken ?? '');
+    localStorage.setItem('userId', data.userId ?? '');
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
     // 4. Redirection automatique via une Map
@@ -47,18 +55,21 @@ export const loginUser = async (email, password, role) => {
   } catch (error) {
     console.error('Erreur connexion:', error);
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('userId');
     throw error;
   }
 };
 
 export const logout = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
   try {
-    await api.post('/logout');
+    if (refreshToken) await api.post('/logout', { refreshToken });
+  } catch {
+  } finally {
+    localStorage.clear();
   }
-  catch (e) {
-  }
-  localStorage.clear();
 };
 
 export const isAuthenticated = () => {

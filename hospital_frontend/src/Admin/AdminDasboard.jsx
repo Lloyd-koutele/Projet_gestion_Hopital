@@ -4,10 +4,11 @@ import Sidebar from "../Page/Sidebar";
 import UserTable from "./UserTable";
 import UpdateUser from "./UpdateUser";
 import Modal from "../Page/Modal";
-import { getAllUsers, updateStatus } from "../services/admin/adminServices";
+import { getAllUsers, updateUserStatus, deleteUser } from "../services/admin/adminServices";
 import "../style/AdminDashboard.css";
 import { getCurrentUserInfo } from "../auth/authService";
 import Header from "../Page/Header";
+import Confirme from "../Page/Confirme";
 import Footer from "../Page/Footer";
 import FilterUsers from "../hooks/FilterUsers";
 import Pagination from "../hooks/Pagination";
@@ -29,6 +30,16 @@ function AdminDashboard() {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        if (error || success) {
+            const timer = setTimeout(() => {
+                setError("");
+                setSuccess("");
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [error, success]);
+
     const fetchUsers = async () => {
         try {
             const data = await getAllUsers();
@@ -41,6 +52,23 @@ function AdminDashboard() {
 
     const [open, setOpen] = useState(true);
 
+    const [confirme, setConfirme] = useState({ isOpen: false, userId: null });
+
+    const handleConfirmDelete = async () => {
+    const { userId } = confirme;
+    setConfirme({ isOpen: false, userId: null });
+    setActionInProgress(true);
+    try {
+        await deleteUser(userId);
+        setSuccess("Utilisateur supprimé avec succès");
+        await fetchUsers();
+    } catch (error) {
+        setError(error.message || "Erreur lors de la suppression");
+    } finally {
+        setActionInProgress(false);
+    }
+};
+
     const handleAction = async (userId, action) => {
         setActionInProgress(true);
         setError("");
@@ -51,7 +79,7 @@ function AdminDashboard() {
                 if (user) {
                     const isActif = user.actif === true || user.actif === "true";
                     const newStatus = !isActif;
-                    await updateStatus(userId, newStatus);
+                    await updateUserStatus(userId, newStatus);
                     setSuccess("Statut de l'utilisateur mis à jour avec succès");
                     await fetchUsers();
                 }
@@ -61,6 +89,9 @@ function AdminDashboard() {
                     setSelectedUser(user);
                     setIsUpdateModalOpen(true);
                 }
+            }else if (action === "delete") {
+                setConfirme({ isOpen: true, userId });
+                return;
             }
         } catch (error) {
             console.error("Erreur lors de l'action: ", error);
@@ -106,6 +137,7 @@ function AdminDashboard() {
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
     );
+    
 
     return (
         <div className="admin-dashboard">
@@ -138,6 +170,13 @@ function AdminDashboard() {
                         </div>
                     </nav>
                 </Sidebar>
+
+                <Confirme
+                    isOpen={confirme.isOpen}
+                    message="Confirmer la suppression de cet utilisateur ?"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={() => setConfirme({ isOpen: false, userId: null })}
+                />
 
                 <div className='main-content'>
                     {isOpen && (

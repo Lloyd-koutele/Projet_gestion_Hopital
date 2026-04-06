@@ -37,16 +37,52 @@ function CreateUser({ onSuccess }) {
         setError(''); setSuccess('');
         if (!validateForm()) return;
         try {
-            const base = { nom: users.nom, prenom: users.prenom, email: users.email, password: users.password, telephone: users.telephone };
-            if (users.role === 'MEDECIN') await createMedecin({ ...base, specialite: users.specialite, numeroOrdre: users.numeroOrdre });
-            else if (users.role === 'CHERCHEUR') await createChercheur({ ...base, specialiteRecherche: users.specialiteRecherche });
-            else if (users.role === 'ADMIN') await createAdmin({ ...base, departement: users.departement });
+            const base = {
+                nom: users.nom,
+                prenom: users.prenom,
+                email: users.email,
+                password: users.password,
+                telephone: users.telephone
+            };
+
+            if (users.role === 'MEDECIN')
+                await createMedecin({
+                    ...base,
+                    specialite: users.specialite,
+                    numeroOrdre: users.numeroOrdre
+                });
+
+            else if (users.role === 'CHERCHEUR')
+                await createChercheur({
+                    ...base,
+                    specialiteRecherche: users.specialiteRecherche
+                });
+
+            else if (users.role === 'ADMIN')
+                await createAdmin({
+                    ...base,
+                    departement: users.departement
+                });
+
             else return setError('Rôle invalide');
+
             setSuccess('Utilisateur créé avec succès');
-            setUsers({ nom: '', prenom: '', password: '', email: '', role: '', telephone: '', specialiteRecherche: '', specialite: '', numeroOrdre: '', departement: '' });
+
+            setUsers({
+                nom: '',
+                prenom: '',
+                password: '',
+                email: '',
+                role: '',
+                telephone: '',
+                specialiteRecherche: '',
+                specialite: '',
+                numeroOrdre: '',
+                departement: ''
+            });
             setTimeout(() => onSuccess?.(), 4000);
         } catch (err) {
-            setError(err.response?.data?.message || err.message || "Erreur lors de la création");
+            setError(err.response?.data?.message || err.message || "Erreur lors de la création de l'utilisateur");
         }
     };
 
@@ -58,7 +94,6 @@ function CreateUser({ onSuccess }) {
             <form onSubmit={handleSubmit}>
                 <div className="form-grid">
 
-                    {/* RÔLE */}
                     <div className="form-field">
                         <select
                             ref={firstInputRef}
@@ -77,40 +112,71 @@ function CreateUser({ onSuccess }) {
 
                     {/* NOM */}
                     <div className="form-field">
-                        <input type="text" name="nom" placeholder=" " className="form-field-input"
-                            value={users.nom} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            name="nom"
+                            placeholder=" "
+                            className="form-field-input"
+                            value={users.nom} onChange={handleChange}
+                            required
+                        />
                         <label>Nom</label>
                     </div>
 
                     {/* PRÉNOM */}
                     <div className="form-field">
-                        <input type="text" name="prenom" placeholder=" " className="form-field-input"
-                            value={users.prenom} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            name="prenom"
+                            placeholder=" "
+                            className="form-field-input"
+                            value={users.prenom} onChange={handleChange}
+                            required
+                        />
                         <label>Prénom</label>
                     </div>
 
                     {/* EMAIL */}
                     <div className="form-field">
-                        <input type="email" name="email" placeholder=" " className="form-field-input"
-                            value={users.email} onChange={handleChange} required />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder=" "
+                            className="form-field-input"
+                            value={users.email} onChange={handleChange}
+                            required
+                        />
                         <label>Email</label>
                     </div>
 
                     {/* TÉLÉPHONE */}
                     <div className="form-field">
-                        <input type="text" name="telephone" placeholder=" " className="form-field-input"
-                            value={users.telephone} onChange={handleChange} required />
+                        <input
+                            type="text"
+                            name="telephone"
+                            placeholder=" "
+                            className="form-field-input"
+                            value={users.telephone} onChange={handleChange}
+                            required
+                        />
                         <label>Téléphone</label>
                     </div>
 
                     {/* MOT DE PASSE */}
                     <div className="form-field form-field-password">
-                        <input type={showPassword ? "text" : "password"} name="password" placeholder=" "
-                            className="form-field-input" value={users.password} onChange={handleChange} required />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password" placeholder=" "
+                            className="form-field-input"
+                            value={users.password}
+                            onChange={handleChange}
+                            required
+                        />
                         <label>Mot de passe</label>
+
                         <button type="button" className="password-toggle-btn"
                             onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? 'masquer' : 'afficher'}
+                            {showPassword ? '👀' : '🫣'}
                         </button>
                     </div>
 
@@ -118,13 +184,26 @@ function CreateUser({ onSuccess }) {
                     {users.role === 'MEDECIN' && <>
                         <hr className="form-section-divider" />
                         <div className="form-field">
-                            <input type="text" name="specialite" placeholder=" " className="form-field-input"
-                                value={users.specialite} onChange={handleChange} required />
+                            <input
+                                type="text"
+                                name="specialite"
+                                placeholder=" "
+                                className="form-field-input"
+                                value={users.specialite}
+                                onChange={handleChange}
+                                required
+                            />
                             <label>Spécialité</label>
                         </div>
                         <div className="form-field">
-                            <input type="text" name="numeroOrdre" placeholder=" " className="form-field-input"
-                                value={users.numeroOrdre} onChange={handleChange} required />
+                            <input
+                                type="text"
+                                name="numeroOrdre"
+                                placeholder=" "
+                                className="form-field-input"
+                                value={users.numeroOrdre} onChange={handleChange}
+                                required
+                            />
                             <label>Numéro d'ordre</label>
                         </div>
                     </>}
@@ -132,8 +211,15 @@ function CreateUser({ onSuccess }) {
                     {users.role === 'CHERCHEUR' && <>
                         <hr className="form-section-divider" />
                         <div className="form-field">
-                            <input type="text" name="specialiteRecherche" placeholder=" " className="form-field-input"
-                                value={users.specialiteRecherche} onChange={handleChange} required />
+                            <input
+                                type="text"
+                                name="specialiteRecherche"
+                                placeholder=" "
+                                className="form-field-input"
+                                value={users.specialiteRecherche}
+                                onChange={handleChange}
+                                required
+                            />
                             <label>Spécialité de recherche</label>
                         </div>
                     </>}
@@ -141,8 +227,15 @@ function CreateUser({ onSuccess }) {
                     {users.role === 'ADMIN' && <>
                         <hr className="form-section-divider" />
                         <div className="form-field">
-                            <input type="text" name="departement" placeholder=" " className="form-field-input"
-                                value={users.departement} onChange={handleChange} required />
+                            <input
+                                type="text"
+                                name="departement"
+                                placeholder=" "
+                                className="form-field-input"
+                                value={users.departement}
+                                onChange={handleChange}
+                                required
+                            />
                             <label>Département</label>
                         </div>
                     </>}

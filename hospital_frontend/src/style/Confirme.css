@@ -1,0 +1,45 @@
+.modal-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-box{
+    padding: 14px 24px;
+    background: linear-gradient(to right, #1a4567 0%, #21a1ac 50%, #26c4d1 100%);
+    color: white;
+    font-size: 1rem;
+    font-family: "Cinzel Decorative", serif;
+    font-weight: 400;
+}
+
+.modal-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;     
+    gap: 12px;               
+    padding: 13px 16px;
+}
+
+.btn-cancel{
+    background: linear-gradient(to right, #cf2409 0%, #983a07 50%, #d15926 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-confirm{
+    background: linear-gradient(to right, #09cf1f 0%, #079812 50%, #26c4d1 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

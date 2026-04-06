@@ -3,14 +3,26 @@ package sn.gestion_hospital.service;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import sn.gestion_hospital.entite.DeviceSession;
 import sn.gestion_hospital.entite.Role;
 import sn.gestion_hospital.entite.User;
+import sn.gestion_hospital.entite.UserActiveToken;
+import sn.gestion_hospital.exception.BusinessException;
+import sn.gestion_hospital.repository.DeviceSessionRepository;
+import sn.gestion_hospital.repository.UserActiveTokenRepository;
 import sn.gestion_hospital.repository.UserRepository;
 import sn.gestion_hospital.security.JwtService;
 
+import java.time.Instant;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +31,14 @@ public class AuthService
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final UserActiveTokenRepository activeTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DeviceSessionRepository deviceSessionRepository;
 
+    @Value("${jwt.refresh.expiration}")
+    private long refreshExpiration;
+
+    @Transactional
     public AuthResponse authenticate(LoginRequest request) 
     {
 
@@ -58,9 +76,7 @@ public class AuthService
             return AuthResponse.failed("Accès non autorisé pour ce compte, veuillez contacter l'administrateur");
         }
 
-        String token = jwtService.generateToken(user);
-
-        return AuthResponse.success(token, user.getId());
+        return resolveSession(user);
     }
 
     public AuthResponse logout() 
@@ -83,21 +99,112 @@ public class AuthService
         private boolean success;
         private String message;
         private String token;
+        private String refreshToken;
         private Long userId;
+        
 
-        public static AuthResponse success(String token, Long userId) 
-        {
-            return new AuthResponse(true, "Authentification réussie", token, userId);
+        public static AuthResponse success(String token, String refreshToken, Long userId) {
+            return new AuthResponse(true, "Authentification réussie", token, refreshToken, userId);
         }
 
-        public static AuthResponse success(String message) 
-        {
-            return new AuthResponse(true, message, null, null);
+        public static AuthResponse success(String message) {
+            return new AuthResponse(true, message, null, null, null);
         }
 
-        public static AuthResponse failed(String message) 
-        {
-            return new AuthResponse(false, message, null, null);
+        public static AuthResponse failed(String message) {
+            return new AuthResponse(false, message, null, null, null);
         }
+
+        
+    }
+
+    private AuthResponse resolveSession (User user)
+    {
+        Instant now = Instant.now();
+        String accessToken;
+
+        Optional<UserActiveToken> existSession = activeTokenRepository.findByUser(user);
+
+        if(existSession.isPresent() && existSession.get().getExpiresAt().isAfter(now))
+        {
+            accessToken = existSession.get().getAccessToken();
+        }
+        else
+        {
+            accessToken = jwtService.generateToken(user);
+            UserActiveToken uat = existSession.orElse(new UserActiveToken());
+            uat.setUser(user);
+            uat.setAccessToken(accessToken);
+            uat.setExpiresAt(now.plusMillis(jwtService.getExpirationTime()));
+            activeTokenRepository.save(uat);
+        }
+
+        String refreshToken = UUID.randomUUID().toString();
+        DeviceSession device = new DeviceSession();
+        device.setUser(user);
+        device.setRefreshToken(refreshToken);
+        device.setExpiresAt(now.plusMillis(refreshExpiration));
+        deviceSessionRepository.save(device);
+
+        return AuthResponse.success(accessToken, refreshToken, user.getId());
+    }
+
+    @Transactional
+    public AuthResponse refresh(String refreshToken) 
+    {
+        DeviceSession device = deviceSessionRepository
+            .findByRefreshTokenAndRevokedFalse(refreshToken)
+            .orElseThrow(() -> new BusinessException("Session invalide"));
+
+        Instant now = Instant.now();
+
+        if (device.getExpiresAt().isBefore(now)) {
+            device.setRevoked(true);
+            deviceSessionRepository.save(device);
+            throw new BusinessException("Session expirée, veuillez vous reconnecter");
+        }
+
+        
+        User user = device.getUser();
+
+        // Vérifier si un autre appareil a déjà renouvelé l'access token
+        Optional<UserActiveToken> existing = activeTokenRepository.findByUser(user);
+        if (existing.isPresent() && existing.get().getExpiresAt().isAfter(now)) 
+        {
+            // Access token toujours valide → le retourner tel quel
+            return AuthResponse.success(existing.get().getAccessToken(), refreshToken, user.getId());
+        }
+
+        // Générer un nouvel access token pour tous les appareils
+        String newAccess = jwtService.generateToken(user);
+        UserActiveToken uat = existing.orElse(new UserActiveToken());
+        uat.setUser(user);
+        uat.setAccessToken(newAccess);
+        uat.setExpiresAt(now.plusMillis(jwtService.getExpirationTime()));
+        activeTokenRepository.save(uat);
+
+        return AuthResponse.success(newAccess, refreshToken, user.getId());
+    }
+
+    @Transactional
+    public AuthResponse logout(String refreshToken) 
+    {
+        //Révoque uniquement la session de cet appareil
+        deviceSessionRepository.findByRefreshTokenAndRevokedFalse(refreshToken)
+            .ifPresent(device -> {
+                device.setRevoked(true);
+                deviceSessionRepository.save(device);
+
+                // Si c'était le dernier appareil connecté → nettoyer l'access token
+                List<DeviceSession> remaining = deviceSessionRepository
+                    .findAllByUserAndRevokedFalse(device.getUser());
+
+                if (remaining.isEmpty()) {
+                    activeTokenRepository.findByUser(device.getUser())
+                        .ifPresent(activeTokenRepository::delete);
+                }
+            });
+
+        return AuthResponse.success("Déconnexion réussie");
     }
 }

@@ -148,7 +148,7 @@ public class MedecinService
     public boolean isDeletableMedecin(Long medecinId)
     {
         Medecin medecin = medecinRepository.findById(medecinId)
-        .orElseThrow(() -> new BusinessException("Admin introuvable"));
+        .orElseThrow(() -> new BusinessException("Medecin introuvable"));
 
         boolean hasCreate = patientRepository.existsByMedecinReferentId(medecinId);
 

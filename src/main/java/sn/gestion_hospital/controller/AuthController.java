@@ -1,9 +1,10 @@
 package sn.gestion_hospital.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
+
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sn.gestion_hospital.service.AuthService;
 
@@ -29,12 +30,15 @@ public class AuthController
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<AuthService.AuthResponse> logout(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> body) 
     {
-
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok(authService.logout());
+        return ResponseEntity.ok(authService.refresh(body.get("refreshToken")));
+    }
+    
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody Map<String, String> body) 
+    {
+        return ResponseEntity.ok(authService.logout(body.get("refreshToken")));
     }
 }

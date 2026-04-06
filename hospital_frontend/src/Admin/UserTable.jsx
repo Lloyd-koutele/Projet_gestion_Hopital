@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import '../style/UserTable.css';
+import '../style/UpdateUser.css';
 
 const UserTable = memo(({ users, onAction, actionInProgress }) => {
 
@@ -7,8 +8,8 @@ const UserTable = memo(({ users, onAction, actionInProgress }) => {
   const normalizeRole = (role) => {
     if (!role || typeof role !== 'string') return '';
     return role
-      .normalize('NFD')               // Sépare les accents
-      .replace(/[\u0300-\u036f]/g, '') // Supprime les accents
+      .normalize('NFD')               
+      .replace(/[\u0300-\u036f]/g, '') 
       .toUpperCase()
       .trim();
   };
@@ -75,9 +76,19 @@ const UserTable = memo(({ users, onAction, actionInProgress }) => {
                   onClick={() => onAction(user.id, 'block-unblock')}
                   disabled={actionInProgress}
                   className="block-unblock"
+                  style={{ backgroundColor: user.actif ? 'green' : 'red', color: 'white' }}
                 >
-                  {user.actif === true ? 'Bloquer' : 'Debloquer'}
+                  {user.actif === true ? 'Active' : 'Bloquer'}
                 </button>
+
+                <button
+                  onClick={() => onAction(user.id, 'delete')}
+                  disabled={actionInProgress}
+                  className="delete-btn"
+                >
+                  Supprimer
+                </button>
+
               </td>
             </tr>
           ))}

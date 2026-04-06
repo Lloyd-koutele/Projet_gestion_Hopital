@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateMedecin, updateChercheur, updateAdmin } from "../services/admin/adminServices";
+import { updateMedecin, updateChercheur, updateAdmin, deleteUser } from "../services/admin/adminServices";
 import '../style/UpdateUser.css';
 
 function UpdateUser({ userData, onSuccess }) {
@@ -47,17 +47,27 @@ function UpdateUser({ userData, onSuccess }) {
         if (!validateForm()) return;
         try {
             const userId = users.id || userData.id;
-            if (!userId) return setError("ID de l'utilisateur manquant");
-            if (users.roles === 'MEDECIN') await updateMedecin(userId, users);
-            else if (users.roles === 'CHERCHEUR') await updateChercheur(userId, users);
-            else if (users.roles === 'ADMIN') await updateAdmin(userId, users);
+            if (!userId)
+                return setError("ID de l'utilisateur manquant");
+
+            if (users.roles === 'MEDECIN')
+                await updateMedecin(userId, users);
+
+            else if (users.roles === 'CHERCHEUR')
+                await updateChercheur(userId, users);
+
+            else if (users.roles === 'ADMIN')
+                await updateAdmin(userId, users);
+
             else return setError('Rôle invalide');
             setSuccess('Utilisateur mis à jour avec succès');
             setTimeout(() => onSuccess?.(), 4000);
+
         } catch (err) {
             setError(err.response?.data?.message || err.message || "Erreur lors de la mise à jour");
         }
     };
+    
 
     return (
         <div>
